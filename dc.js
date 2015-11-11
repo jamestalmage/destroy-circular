@@ -5,7 +5,7 @@ module.exports = function(obj) {
     }
     var to = Array.isArray(from) ? [] : {};
     seen.push(from);
-    Object.keys(from).forEach(function(key) {
+    Object.getOwnPropertyNames(from).forEach(function(key) {
       if (typeof from[key] == 'function')
         return;
       if (!from[key] || (typeof from[key] != 'object' && !Array.isArray(from[key])))
