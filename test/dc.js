@@ -47,4 +47,23 @@ describe('destroy-circular', function() {
     assert.equal(d.b.y[1][0], '[Circular]');
     assert.equal(d.b.y[0][1], '[Circular]');
   });
+  it('should not break stringify contract (re: functions)', function () {
+    function a() {}
+    function b() {}
+    a.b = b;
+    var obj = {a: a};
+
+    assert.equal(JSON.stringify(obj), JSON.stringify(dc(obj)));
+    assert.equal(JSON.stringify(a), JSON.stringify(dc(a)));
+  });
+  it('should drop functions', function() {
+    function a(){}
+    a.foo = 'bar;';
+    a.b = a;
+    var obj = {a: a};
+
+    var d = dc(obj);
+    assert.deepEqual(d, {});
+    assert(!d.hasOwnProperty('a'));
+  });
 })
